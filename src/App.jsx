@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Pill from "./components/pill/pill";
 import { motion, useMotionValue } from "framer-motion";
+import Card from "./components/pill/card";
 
 const SuperBubble = () => {
   const [activePill, setActivePill] = useState(0);
@@ -38,7 +39,7 @@ const SuperBubble = () => {
       bigImg: (
         <img
           src="/vibes.png"
-          className="w-[375px] h-auto top-[2px] relative rounded-[20px]"
+          className="w-[375px] h-auto  relative  "
           alt="Phone"
         />
       ),
@@ -50,7 +51,7 @@ const SuperBubble = () => {
       bigImg: (
         <img
           src="/studio.webp"
-          className="w-[375px] relative h-auto top-[2px] rounded-[20px]"
+          className="w-[375px] relative h-auto  "
           alt="Email"
         />
       ),
@@ -62,7 +63,7 @@ const SuperBubble = () => {
       bigImg: (
         <img
           src="/art_in_studio.png"
-          className="w-[375px] h-auto top-[2px] relative rounded-[20px]"
+          className="w-[375px] h-auto relative  "
           alt="Email"
         />
       ),
@@ -74,7 +75,7 @@ const SuperBubble = () => {
       bigImg: (
         <img
           src="/standing.webp"
-          className="w-[375px] relative h-auto top-[2px] rounded-[20px]"
+          className="w-[375px] relative h-auto  "
           alt="Email"
         />
       ),
@@ -86,7 +87,7 @@ const SuperBubble = () => {
       bigImg: (
         <img
           src="/homies.webp"
-          className="w-[375px] relative h-auto top-[2px] rounded-[20px]"
+          className="w-[375px] relative h-auto  "
           alt="Email"
         />
       ),
@@ -96,10 +97,13 @@ const SuperBubble = () => {
       alt: "Email",
       text: "typo.by",
       bigImg: (
-        <div className="custom-typo-component">
-          {/* Custom component logic for Typo */}
-          <p>This is Typo component</p>
-        </div>
+        <Card
+          text="typo"
+          img="/typo.svg"
+          href="https://youtube.com"
+          description="dsaijodsjao"
+          height="148px"
+        />
       ),
     },
     {
@@ -107,10 +111,13 @@ const SuperBubble = () => {
       alt: "Email",
       text: "instagram.com",
       bigImg: (
-        <div className="custom-instagram-component">
-          {/* Custom component logic for Instagram */}
-          <p>This is Instagram component</p>
-        </div>
+        <Card
+          text="instagram"
+          img="/instagram.svg"
+          href="https://instagram.com"
+          description="dsaijodsjao"
+          height="104px"
+        />
       ),
     },
     {
@@ -118,25 +125,26 @@ const SuperBubble = () => {
       alt: "Email",
       text: "youtube.com",
       bigImg: (
-        <div className="custom-youtube-component">
-          {/* Custom component logic for YouTube */}
-          <p>This is YouTube component</p>
-        </div>
+        <Card
+          text="youtube"
+          img="/youtube.svg"
+          href="https://youtube.com"
+          description="dsaijodsjao"
+          height="126px"
+        />
       ),
     },
   ];
 
   return (
-    <div className="flex w-full justify-center relative mt-16">
+    <div className="flex w-full justify-center relative mt-16 box-border">
       <motion.div
         className="flex flex-col w-[375px] rounded-[20px] overflow-hidden"
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }} // Constraint updated to allow horizontal drag
-        dragMomentum={false}
-        style={{ x: dragX }}
-        onDragEnd={onDragEnd}
+        drag
+        dragTransition={{ bounceStiffness: 100, bounceDamping: 9 }}
+        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       >
-        <div className="text-white w-[375px] p-[16px_16px_36px] gap-[8px] flex flex-wrap shadow-sm text-[1.2em] leading-[1.2em] border border-white/10 bg-gradient-to-b from-[#3076ff] to-[#1d49e5]">
+        <div className="text-white w-[375px] p-[16px_16px_36px] gap-[8px] flex flex-wrap shadow-sm text-[1.2em] leading-[1.2em] border-2 border-white/10 bg-gradient-to-b from-[#3076ff] to-[#1d49e5]">
           <p>We work together IRL in Soho, NYC.</p>
           <p>
             Our office doubles as an art studio, film set, and creative space.
@@ -153,7 +161,19 @@ const SuperBubble = () => {
             />
           ))}
         </div>
-        <motion.div className="w-full relative rounded-[20px] top-[-20px] overflow-hidden border-black/10 border border-solid">
+        <motion.div
+          className="w-full relative top-[-20px] overflow-hidden   rounded-[20px]"
+          animate={{ height: `${getHeight()}px` }}
+        >
+          <motion.div
+            className="border-2 border-black/10 box-border border-solid absolute top-0 left-0 h-fit  rounded-[20px] w-[375px] z-10 pointer-events-none"
+            animate={{ height: `${getHeight()}px` }}
+          />
+          <motion.div
+            className=" absolute top-0 left-0 w-[375px] z-0 pointer-events-none bg-black"
+            animate={{ height: `${getHeight()}px` }}
+          />
+
           <Images
             activePill={activePill}
             dragX={dragX}
@@ -179,13 +199,16 @@ const Images = ({ activePill, dragX, Pills, getHeight, onDragEnd }) => {
         height: `${getHeight()}px`,
       }}
       onDragEnd={onDragEnd}
-      transition={{ ease: [0.6, -0.05, 0.01, 0.99], duration: 0.3 }}
+      transition={{
+        duration: 0.3,
+        type: "spring",
+        stiffness: 190.5,
+        damping: 32.4,
+        mass: 1.9,
+      }}
     >
       {Pills.map((pill, index) => (
-        <motion.div
-          key={index}
-          className="w-[375px] h-auto pointer-events-none"
-        >
+        <motion.div key={index} className="w-[375px]  pointer-events-none">
           {pill.bigImg}
         </motion.div>
       ))}
